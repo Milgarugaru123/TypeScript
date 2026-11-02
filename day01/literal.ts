@@ -2,8 +2,8 @@
 const student: string = "10923f9d";
 const direction: "up" | "down" | "left" | "right" = "left";
 
-const students: "윤정은" | "노노카짱" | "김보민" | "오태식" | "홍다현" =
-  "임경태";
+// const students: "윤정은" | "노노카짱" | "김보민" | "오태식" | "홍다현" =
+//   "임경태";
 
 const attendance: "출석" | "결석" | "지각" | "조퇴" = "결석";
 
