@@ -1,6 +1,6 @@
 "use client";
 
-import { ItemProps, TCartItem } from "@/src/Item";
+import { TCartItem } from "@/src/Item";
 import { useEffect, useState } from "react";
 
 const CART_KEY = "cart";
@@ -26,6 +26,33 @@ export const addToCart = (item: Omit<TCartItem, "count">) => {
   writeCart(data);
 };
 
+export const qtyAdd = (item: TCartItem) => {
+  const data = readCart();
+  const found = data.find((v) => v.id == item.id);
+  if (found) {
+    found.count += 1;
+    writeCart(data);
+  }
+};
+
+export const qtySub = (item: TCartItem) => {
+  const data = readCart();
+  const found = data.find((v) => v.id == item.id);
+  if (found) {
+    found.count -= found.count <= 1 ? 0 : 1;
+    writeCart(data);
+  }
+};
+
+export const removeToCart = (item: Omit<TCartItem, "count">) => {
+  const data = readCart();
+  const found = data.find((v) => v.id == item.id);
+  if (found) {
+    const filteredData = data.filter((v) => v.id != item.id);
+    writeCart(filteredData);
+  }
+};
+
 export const useCart = () => {
   const [total, setTotal] = useState<TCartItem[]>([]);
 
@@ -37,5 +64,5 @@ export const useCart = () => {
   }, []);
 
   const result = total.reduce((a, c) => a + c.count, 0);
-  return { result };
+  return { result, total };
 };

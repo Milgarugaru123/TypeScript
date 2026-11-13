@@ -1,22 +1,41 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { TCartItem } from "./Item";
+import { useState } from "react";
 import CartItem from "./CartItem";
+import { useCart } from "@/utils/hooks";
+
+type sortOption = `name` | `low` | `high`;
 
 const List = () => {
-  const [items, setItems] = useState<TCartItem[]>([]);
-  useEffect(() => {
-    const cart = window.localStorage.getItem("cart");
-    const data: TCartItem[] = cart ? JSON.parse(cart) : [];
-    setItems((prev) => data);
-  }, []);
+  const { total } = useCart();
+
+  const [option, setOption] = useState<sortOption>();
 
   return (
     <section>
-      {items.map((v) => (
-        <CartItem key={v.id} {...v} price={typeof v.price == "string" ? +v.price : v.price} />
-      ))}
+      <div>
+        <select
+          name=""
+          id=""
+          className={`bg-black`}
+          onChange={(e) => {
+            setOption((prev) => e.target.value as sortOption);
+          }}
+        >
+          <option value="name">가나다순</option>
+          <option value="low">낮은 가격순</option>
+          <option value="high">높은 가격순</option>
+        </select>
+      </div>
+      {total
+        .sort((a, b) => {
+          if (option == `name`) return a.name > b.name ? 1 : -1;
+          else if (option == `low`) return a.price > b.price ? 1 : -1;
+          else return a.price < b.price ? 1 : -1;
+        })
+        .map((v) => (
+          <CartItem key={v.id} {...v} />
+        ))}
     </section>
   );
 };

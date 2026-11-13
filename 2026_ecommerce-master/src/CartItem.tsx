@@ -1,23 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { TCartItem } from "./Item";
+import { qtyAdd, qtySub, removeToCart } from "@/utils/hooks";
 
-type CartItemProps = {
-  emoji: string;
-  name: string;
-  price: number;
-  count: number;
-};
-
-const CartItem = ({ emoji = "🚬", name = "아이템", price = 1000, count = 1 }: Partial<CartItemProps>) => {
-  const [cnt, setCnt] = useState<number>(count);
-
-  const add = () => {
-    setCnt((prev) => prev + 1);
-  };
-
-  const sub = () => {
-    setCnt((prev) => (prev == 1 ? 1 : prev - 1));
+const CartItem = ({
+  id = 0,
+  emoji = "🚬",
+  name = "아이템",
+  price = 1000,
+  count = 1,
+}: Partial<TCartItem>) => {
+  const remove = () => {
+    removeToCart({ id, emoji, name, price });
   };
 
   return (
@@ -27,19 +22,29 @@ const CartItem = ({ emoji = "🚬", name = "아이템", price = 1000, count = 1 
         <div className="flex flex-col">
           <div>{name}</div>
           <div className="flex justify-between items-center">
-            <button onClick={sub} className="p-2 rounded-lg border border-slate-200">
-              -
+            <button
+              onClick={() => {
+                qtySub({ id, emoji, name, price, count });
+              }}
+              className="p-2 rounded-lg border border-slate-200"
+            >
+              －
             </button>
             <span>{count}</span>
-            <button onClick={add} className="p-2 rounded-lg border border-slate-200">
-              +
+            <button
+              onClick={() => {
+                qtyAdd({ id, emoji, name, price, count });
+              }}
+              className="p-2 rounded-lg border border-slate-200"
+            >
+              ＋
             </button>
           </div>
         </div>
       </div>
       <div>
-        <div>삭제</div>
-        <div>{price * cnt}</div>
+        <div onClick={remove}>삭제</div>
+        <div>{price * count}</div>
       </div>
     </article>
   );
