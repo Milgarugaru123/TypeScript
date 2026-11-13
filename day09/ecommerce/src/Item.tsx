@@ -1,17 +1,17 @@
-type ItemProps = {
+export type ItemProps = {
   id: number;
   name: string;
   img?: string;
   price: number | string;
 };
 
-export type CartItem = ItemProps & { count: number };
+export type TCartItem = ItemProps & { count: number };
 
 const Item = ({ id, name = ``, img, price = 0 }: ItemProps) => {
   const add = () => {
     if (id === null) return;
     const cart = window.localStorage.getItem(`cart`);
-    const data: CartItem[] = cart ? JSON.parse(cart) : [];
+    const data: TCartItem[] = cart ? JSON.parse(cart) : [];
     const found = data.find((x) => x.id === id);
     if (found) {
       found.count += 1;
@@ -27,7 +27,7 @@ const Item = ({ id, name = ``, img, price = 0 }: ItemProps) => {
       className={`w-full h-max border border-slate-100 rounded-lg p-3 flex flex-col gap-2`}
     >
       <div
-        className={`w-full aspect-square bg-violet-50 rounded-lg flex justify-center items-center`}
+        className={`text-4xl w-full aspect-square bg-violet-50 rounded-lg flex justify-center items-center`}
       >
         {img}
       </div>

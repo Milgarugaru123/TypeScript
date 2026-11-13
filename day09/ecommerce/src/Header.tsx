@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CartItem } from "./Item";
+import { TCartItem } from "./Item";
 import { useEffect, useState } from "react";
 
 const Header = () => {
@@ -9,7 +9,7 @@ const Header = () => {
   useEffect(() => {
     const read = () => {
       const cart = window.localStorage.getItem(`cart`);
-      const data: CartItem[] = cart ? JSON.parse(cart) : [];
+      const data: TCartItem[] = cart ? JSON.parse(cart) : [];
       setTotal((prev) => data.reduce((x, y) => x + y.count, 0));
     };
     read();
